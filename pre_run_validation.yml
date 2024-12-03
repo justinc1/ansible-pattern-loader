@@ -4,3 +4,17 @@
     that:
       - seed_usecase is defined and seed_usecase is not none
     fail_msg: "The seed_usecase variable is not defined. Please set the seed_usecase variable."
+
+# If same git repo is used multiple times in usecases var,
+# then the branch from last occurence will be used.
+# Also the dest dir for git checkout is the very last part of URL -
+# this can also result in confusion.
+- name: Check every usecase repo is defined only once
+  ansible.builtin.assert:
+    that: >
+      usecases | map(attribute="url") | map("split", "/") | map("last") | unique | length
+      ==
+      usecases | length
+    fail_msg: >
+      There are duplicated git repo names in usecases variable.
+      Short names: {{ usecases | map(attribute="url") | map("split", "/") | map("last") }}
