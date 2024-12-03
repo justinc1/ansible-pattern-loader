@@ -1,0 +1,47 @@
+---
+- name: Seeding Red Hat Ansible Portal content
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Perform pre-run checks
+      ansible.builtin.include_tasks:
+        file: ./pre_run_validation.yml
+
+    - name: Filter valid usecases from the list
+      ansible.builtin.set_fact:
+        selected_usecases: "{{ usecases | selectattr('name', 'in', seed_usecase) | list }}"
+
+    - name: Create temp dir
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: build
+      register: __tmp_dir
+
+    - name: Load pattern content
+      block:
+        - name: Get supported Ansible Patterns
+          ansible.builtin.git:
+            repo: "{{ usecase['url'] }}"
+            dest: '{{ __tmp_dir.path }}/{{ usecase["url"].split("/")[-1] }}'
+            version: "{{ usecase['version'] | default('main') }}"
+          loop: "{{ selected_usecases }}"
+          loop_control:
+            label: "{{ usecase }}"
+            loop_var: usecase
+
+        - name: Get all usecase setup.yml files from patterns folder
+          ansible.builtin.find:
+            paths: '{{ __tmp_dir.path }}/{{ usecase["url"].split("/")[-1] }}/extensions/patterns/'
+            patterns: "setup.yml"
+            recurse: true
+          loop: "{{ selected_usecases }}"
+          loop_control:
+            loop_var: usecase
+          register: patterns
+
+        - name: Load patterns
+          ansible.builtin.include_tasks: load_pattern.yml
+          loop: '{{ patterns.results[0].files }}'
+          loop_control:
+            loop_var: pattern

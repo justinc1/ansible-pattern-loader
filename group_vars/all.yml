@@ -1,0 +1,9 @@
+---
+controller_dependency_check: false
+usecases:
+  - name: rhel
+    url: https://github.com/craig-br/portal_experience_demo
+    version: feature-rhel-aa
+  - name: network
+    url: https://github.com/Spredzy/experience_demo_2
+    version: main

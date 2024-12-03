@@ -1,0 +1,6 @@
+---
+- name: Check if the seed_usecase variable is set
+  ansible.builtin.assert:
+    that:
+      - seed_usecase is defined and seed_usecase is not none
+    fail_msg: "The seed_usecase variable is not defined. Please set the seed_usecase variable."

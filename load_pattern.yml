@@ -1,0 +1,49 @@
+---
+- name: Include vars
+  ansible.builtin.include_vars:
+    file: '{{ pattern.path }}'
+
+- name: Extract information
+  ansible.builtin.set_fact:
+    __pattern_bucket: '{{ pattern.path.split("/")[3] }}'
+    __pattern_name: '{{ pattern.path.split("/")[6] }}'
+
+- name: 'Check if an Execution Environment is provided for {{ __pattern_bucket }}.{{ __pattern_name }}' # noqa name[template]
+  ansible.builtin.file:
+    path: "{{ pattern.path.replace('setup.yml', 'exec_env') }}"
+  failed_when: false
+  register: __pattern_exec_env
+
+# - name: Generate and publish Execution Environment
+#   when: __pattern_exec_env.state == 'directory'
+#   block:
+    # - name: Include EE Builder Role
+    #   ansible.builtin.include_role:
+    #     name: infra.ee_utilities.ee_builder
+    #   vars:
+    #     ee_builder_dir_clean: false
+    #     ee_builder_dir: "{{ pattern.path.replace('setup.yml', 'exec_env') }}"
+    #     ee_update_base_images: false
+    #     ee_pull_collections_from_hub: false
+    #     ee_image_push: true
+    #     ee_registry_username: '{{ ee_registry_username }}'
+    #     ee_registry_password: '{{ ee_registry_password }}'
+    #     ee_registry_dest: '{{ ee_registry_url }}'
+    #     ee_list:
+    #       - name: "{{ ee_registry_url }}/{{ __pattern_bucket }}_{{ __pattern_name }}"
+    #         skip_generation: true
+
+    # - name: Dynamically add a new EE to controller_configuration
+    #   ansible.builtin.set_fact:
+    #     controller_execution_environments:
+    #       - name: "ee_{{ __pattern_bucket }}_{{ __pattern_name }}"
+    #         image: "{{ ee_registry_url }}/{{ __pattern_bucket }}_{{ __pattern_name }}"
+    #         pull: missing
+            # pull: always
+
+- name: Execute automation controller resource configuration
+  ansible.builtin.include_role:
+    name: infra.controller_configuration.dispatch
+  vars:
+    controller_configuration_async_delay: 1
+    controller_configuration_async_retries: 30
