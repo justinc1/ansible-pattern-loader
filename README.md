@@ -46,6 +46,7 @@ Run
 ```
 ansible-playbook -e@aap.yml -e seed_usecase=rhel seed_portal_content.yml
 ansible-playbook -e@aap.yml -e seed_usecase=network seed_portal_content.yml
+ansible-playbook -e@aap.yml -e seed_usecase='{"rhel","network"}' seed_portal_content.yml
 ```
 
 ## Prepare execution environment

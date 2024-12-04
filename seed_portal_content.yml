@@ -42,6 +42,6 @@
 
         - name: Load patterns
           ansible.builtin.include_tasks: load_pattern.yml
-          loop: '{{ patterns.results[0].files }}'
+          loop: "{{ patterns.results | sum(attribute='files', start=[]) }}"
           loop_control:
             loop_var: pattern
