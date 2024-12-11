@@ -19,9 +19,7 @@ cat aap.yml
 ---
 aap_hostname: https://AAP_IP
 aap_validate_certs: false
-# controller_oauthtoken:
-aap_username: admin
-aap_password: todo
+aap_token: todo
 ```
 
 Install needed collections:
