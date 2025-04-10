@@ -29,6 +29,7 @@
           loop_control:
             label: "{{ usecase }}"
             loop_var: usecase
+          no_log: "{{ usecase['url'] is search('https://[^/]+:[^@]+@') }}"
 
         - name: Get all usecase setup.yml files from patterns folder
           ansible.builtin.find:
@@ -39,6 +40,7 @@
           loop_control:
             loop_var: usecase
           register: patterns
+          no_log: "{{ usecase['url'] is search('https://[^/]+:[^@]+@') }}"
 
         - name: Load patterns
           ansible.builtin.include_tasks: load_pattern.yml
