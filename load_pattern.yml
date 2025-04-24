@@ -45,5 +45,5 @@
   ansible.builtin.include_role:
     name: infra.aap_configuration.dispatch
   vars:
-    aap_configuration_async_delay: 1
+    aap_configuration_async_delay: 2
     aap_configuration_async_retries: 30
