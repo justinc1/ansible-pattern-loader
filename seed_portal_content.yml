@@ -25,6 +25,8 @@
             repo: "{{ usecase['url'] }}"
             dest: '{{ __tmp_dir.path }}/{{ usecase["url"].split("/")[-1] }}'
             version: "{{ usecase['version'] | default('main') }}"
+          environment:
+            GIT_TERMINAL_PROMPT: 0
           loop: "{{ selected_usecases }}"
           loop_control:
             label: "{{ usecase }}"
