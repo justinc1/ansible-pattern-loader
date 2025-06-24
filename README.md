@@ -20,7 +20,10 @@ cat aap.yml
 aap_hostname: https://AAP_IP
 aap_validate_certs: false
 aap_token: todo
+git_token: todo  # optional, needed only for private git repositories
 ```
+
+# For private git repos, you need to create.
 
 Install needed collections.
 You need a token to access automation hub.
