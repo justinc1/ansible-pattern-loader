@@ -20,6 +20,7 @@ cat aap.yml
 aap_hostname: https://AAP_IP
 aap_validate_certs: false
 aap_token: todo
+git_token: todo  # optional, needed only for private git repositories
 ```
 
 Install needed collections.

@@ -13,6 +13,7 @@ usecases:
 #  - name: cloud
 #    url: https://github.com/redhat-cop/cloud.aws_ops
 #    version: main
-  - name: rhelai-patterns
-    url: https://github.com/ansible-collections/infra.si
+  - name: ai
+    url: https://github.com/ansible-collections/infra.ai
     version: patterns
+    inject_git_token: true
