@@ -22,20 +22,14 @@ aap_validate_certs: false
 aap_token: todo
 ```
 
-Install needed collections:
+Install needed collections.
+You need a token to access automation hub.
+Get it at https://console.redhat.com/ansible/automation-hub/token.
 
 ```
-cat requirements.yml 
-collections:
-  - name: ansible.platform
-  - name: ansible.hub
-  - name: ansible.controller
-  - name: ansible.eda
-  - name: infra.aap_configuration
-  - name: infra.ee_utilities
-  - name: containers.podman
-
-ansible-galaxy collection install -r requirements.yml
+export ANSIBLE_GALAXY_SERVER_AUTOMATIONHUB_TOKEN=...
+cp ansible.cfg.sample ansible.cfg
+ansible-galaxy collection install -r requirements.yml.sample
 pip install ansible-builder
 ```
 
