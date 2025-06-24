@@ -16,3 +16,4 @@ usecases:
   - name: ai
     url: https://github.com/ansible-collections/infra.ai
     version: patterns
+    inject_git_token: true

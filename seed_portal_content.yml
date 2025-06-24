@@ -22,11 +22,22 @@
       block:
         - name: Get supported Ansible Patterns
           ansible.builtin.git:
-            repo: "{{ usecase['url'] }}"
+            repo: "{{ url_with_auth }}"
             dest: '{{ __tmp_dir.path }}/{{ usecase["url"].split("/")[-1] }}'
             version: "{{ usecase['version'] | default('main') }}"
           environment:
             GIT_TERMINAL_PROMPT: 0
+          vars:
+            url_with_auth: >-
+              {{
+                (usecase['inject_git_token'] | default(false))
+                | ternary(
+                    usecase['url'] | replace('https://', 'https://dummy_username:' + git_token + '@')
+                    ,
+                    usecase['url']
+                  )
+                | trim
+              }}
           loop: "{{ selected_usecases }}"
           loop_control:
             label: "{{ usecase }}"
