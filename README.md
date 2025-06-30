@@ -32,7 +32,7 @@ Get it at https://console.redhat.com/ansible/automation-hub/token.
 ```
 export ANSIBLE_GALAXY_SERVER_AUTOMATIONHUB_TOKEN=...
 cp ansible.cfg.sample ansible.cfg
-ansible-galaxy collection install -r requirements.yml
+ansible-galaxy collection install -r requirements.yml.sample
 pip install ansible-builder
 ```
 
